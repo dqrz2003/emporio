@@ -1,0 +1,651 @@
+/* ==========================================================================
+   EMPORIO - GRELHADOS & VINHOS
+   Cartão de Visitas Digital & Link Hub
+   Estilo: Luxo, Sofisticação & Alta Conversão
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Variáveis de Design Tokens (Design System)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paleta Principal */
+  --bg-deep: #0a0a0a;
+  --bg-wood-dark: #1b0e08;
+  --bg-wood-card: #2c1810;
+  --bg-wood-card-light: #3d2314;
+
+  /* Dourados Metálicos */
+  --gold-primary: #d4af37;
+  --gold-light: #faecc1;
+  --gold-medium: #b68925;
+  --gold-dark: #805b12;
+  --gold-glow: rgba(212, 175, 55, 0.22);
+  --gold-border: rgba(212, 175, 55, 0.38);
+  --gold-border-hover: rgba(212, 175, 55, 0.85);
+
+  /* Tipografia & Contrastes */
+  --text-main: #fcf8f2;
+  --text-secondary: #d6c6b2;
+  --text-muted: #9e8d7a;
+  --text-highlight: #f5e0a3;
+
+  /* Fontes */
+  --font-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --container-max-width: 440px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Transições Suaves */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset e Configurações Globais
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  padding: 1.5rem 1rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fundo com textura sutil e vinheta cinematográfica */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(61, 35, 20, 0.35) 0%, transparent 65%),
+    radial-gradient(circle at 50% 85%, rgba(44, 24, 16, 0.4) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.98) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Efeitos de Luz Ambiente */
+.ambient-glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow.top-left {
+  top: -60px;
+  left: -80px;
+  background: radial-gradient(circle, var(--gold-primary), transparent 70%);
+}
+
+.ambient-glow.bottom-right {
+  bottom: -60px;
+  right: -80px;
+  background: radial-gradient(circle, #805b12, transparent 70%);
+}
+
+/* --------------------------------------------------------------------------
+   3. Container Principal (Formato Cartão Mobile)
+   -------------------------------------------------------------------------- */
+.card-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. Cabeçalho & Perfil
+   -------------------------------------------------------------------------- */
+.profile-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Logotipo com Moldura Dourada */
+.logo-wrapper {
+  position: relative;
+  margin-bottom: 1.1rem;
+}
+
+.logo-frame {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(145deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 20px var(--gold-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.logo-frame:hover {
+  transform: scale(1.04) rotate(1deg);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.7),
+    0 0 28px rgba(212, 175, 55, 0.4);
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Tipografia do Restaurante */
+.brand-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+
+  /* Efeito Dourado Metalizado no Texto */
+  background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 30%, var(--gold-primary) 70%, var(--gold-medium) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+
+.brand-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+  margin-bottom: 0.85rem;
+}
+
+/* Divisor Ornamental */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 70%;
+  margin: 0.15rem 0 0.85rem;
+  opacity: 0.8;
+}
+
+.ornament-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+}
+
+.ornament-divider .symbol {
+  color: var(--gold-primary);
+  font-size: 0.65rem;
+  filter: drop-shadow(0 0 4px var(--gold-primary));
+}
+
+/* Biografia */
+.brand-bio {
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 340px;
+  margin-bottom: 1rem;
+}
+
+/* Badge de Status / Excelência */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(44, 24, 16, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.status-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--gold-primary);
+  box-shadow: 0 0 8px var(--gold-primary);
+  animation: pulseLight 2.2s infinite ease-in-out;
+}
+
+.status-text {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-highlight);
+  text-transform: uppercase;
+}
+
+@keyframes pulseLight {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Redes Sociais & Contatos Rápidos
+   -------------------------------------------------------------------------- */
+.social-links-section {
+  width: 100%;
+}
+
+.social-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  background: linear-gradient(145deg, rgba(44, 24, 16, 0.8), rgba(61, 35, 20, 0.8));
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.social-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--gold-primary);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.social-label {
+  letter-spacing: 0.04em;
+}
+
+.social-btn:hover {
+  background: linear-gradient(145deg, #3d2314, #4e2d19);
+  border-color: var(--gold-border-hover);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 14px var(--gold-glow);
+}
+
+.social-btn:hover .social-icon {
+  transform: scale(1.15);
+  color: var(--gold-light);
+}
+
+.social-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* --------------------------------------------------------------------------
+   6. Botões de Ação Principais (Cartões Largos)
+   -------------------------------------------------------------------------- */
+.action-buttons-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.action-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.05rem;
+  width: 100%;
+  padding: 1.15rem 1.25rem;
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+
+  /* Fundo Marrom Madeira Nobre */
+  background: linear-gradient(135deg, var(--bg-wood-card) 0%, var(--bg-wood-card-light) 100%);
+  border: 1px solid var(--gold-border);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+
+  overflow: hidden;
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    background var(--transition-base);
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Efeito de Brilho Sutil de Fundo no Cartão */
+.action-card .card-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.12), transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+/* Linha de reflexo / Shimmer sweep animado */
+.action-card .card-shimmer {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 30%,
+      rgba(212, 175, 55, 0.15) 50%,
+      rgba(255, 255, 255, 0.04) 70%,
+      transparent 100%);
+  transform: skewX(-22deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+}
+
+/* Caixa do Ícone */
+.card-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(20, 10, 6, 0.8), rgba(44, 24, 16, 0.9));
+  border: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--gold-primary);
+  transition: transform var(--transition-base), color var(--transition-base);
+}
+
+/* Conteúdo Textual */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-align: left;
+}
+
+.card-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  width: fit-content;
+}
+
+.card-tag.gold {
+  color: var(--gold-primary);
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  line-height: 1.25;
+  transition: color var(--transition-fast);
+}
+
+.card-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+/* Seta Indicadora */
+.card-arrow {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-primary);
+  opacity: 0.75;
+  transition: transform var(--transition-base), opacity var(--transition-base), color var(--transition-base);
+}
+
+.card-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Destaque Especial para o Cartão de Delivery (Conversão) */
+.action-card.highlight {
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(212, 175, 55, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.action-card.highlight .card-icon-box {
+  border-color: rgba(212, 175, 55, 0.55);
+}
+
+/* Estados de Hover e Foco */
+.action-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-border-hover);
+  background: linear-gradient(135deg, #341c13 0%, #462817 100%);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.6),
+    0 0 24px var(--gold-glow),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+
+.action-card:hover .card-shimmer {
+  left: 150%;
+}
+
+.action-card:hover .card-glow {
+  opacity: 1;
+}
+
+.action-card:hover .card-title {
+  color: var(--gold-light);
+}
+
+.action-card:hover .card-icon-box {
+  transform: scale(1.08);
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 14px var(--gold-glow);
+}
+
+.action-card:hover .card-icon {
+  color: var(--gold-light);
+}
+
+.action-card:hover .card-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+  color: var(--gold-light);
+}
+
+/* Toque no Mobile (Active State) */
+.action-card:active {
+  transform: translateY(-1px) scale(0.985);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* Acessibilidade de Foco */
+.action-card:focus-visible,
+.social-btn:focus-visible {
+  outline: 2px solid var(--gold-primary);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Rodapé Sofisticado
+   -------------------------------------------------------------------------- */
+.profile-footer {
+  width: 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.footer-hours {
+  font-size: 0.78rem;
+  color: var(--gold-primary);
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.footer-copy {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsividade & Micro-ajustes (Mobile First)
+   -------------------------------------------------------------------------- */
+@media (max-width: 380px) {
+  body {
+    padding: 1.2rem 0.75rem;
+  }
+
+  .card-container {
+    gap: 1.4rem;
+  }
+
+  .logo-frame {
+    width: 92px;
+    height: 92px;
+  }
+
+  .brand-title {
+    font-size: 1.7rem;
+  }
+
+  .brand-bio {
+    font-size: 0.86rem;
+  }
+
+  .social-list {
+    gap: 0.5rem;
+  }
+
+  .social-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .action-card {
+    padding: 1rem 0.95rem;
+    gap: 0.85rem;
+  }
+
+  .card-icon-box {
+    width: 42px;
+    height: 42px;
+  }
+
+  .card-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.74rem;
+  }
+}
+
+/* Usuários com preferência de redução de movimentos */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .action-card .card-shimmer {
+    display: none;
+  }
+}

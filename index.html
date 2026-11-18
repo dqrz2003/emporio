@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Emporio Gourmet | Gastronomia & Vinhos</title>
+  <meta name="description"
+    content="Ambiente sofisticado, cortes nobres na brasa e carta exclusiva de vinhos. Bem-vindo ao Emporio Grelhados & Vinhos.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Open Graph / Meta de Compartilhamento -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Emporio | Grelhados & Vinhos">
+  <meta property="og:description"
+    content="Ambiente sofisticado, sabores inesquecíveis. Confira nosso cardápio ou peça em casa.">
+
+  <!-- Google Fonts: Cinzel (Serif Luxo) e Montserrat (Sans-serif Elegante) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Efeitos de iluminação de fundo ambiente -->
+  <div class="ambient-glow top-left" aria-hidden="true"></div>
+  <div class="ambient-glow bottom-right" aria-hidden="true"></div>
+
+  <main class="card-container">
+
+    <!-- 1. Cabeçalho / Perfil -->
+    <header class="profile-header">
+
+      <!-- Moldura dourada com Brasão/Logotipo Vetorial do Emporio -->
+      <div class="logo-wrapper">
+        <div class="logo-frame">
+          <svg class="logo-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"
+            aria-label="Brasão Oficial Emporio">
+            <defs>
+              <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#faecc1" />
+                <stop offset="40%" stop-color="#d4af37" />
+                <stop offset="70%" stop-color="#b68925" />
+                <stop offset="100%" stop-color="#805b12" />
+              </linearGradient>
+              <linearGradient id="woodGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3d2314" />
+                <stop offset="100%" stop-color="#1e100a" />
+              </linearGradient>
+            </defs>
+
+            <!-- Fundo do Brasão -->
+            <circle cx="60" cy="60" r="54" fill="url(#woodGradient)" stroke="url(#goldGradient)" stroke-width="2" />
+            <circle cx="60" cy="60" r="49" fill="none" stroke="url(#goldGradient)" stroke-width="0.8"
+              stroke-dasharray="3 2" opacity="0.8" />
+
+            <!-- Ícone decorativo: Ramo superior, Brasão Monograma 'E', Garfo e Faca cruzados estilizados -->
+            <g transform="translate(0, -2)">
+              <!-- Coroa / Detalhe Real Superior -->
+              <path d="M54 28L60 22L66 28L63 32H57L54 28Z" fill="url(#goldGradient)" />
+
+              <!-- Monograma Central 'E' em estilo clássico -->
+              <text x="60" y="70" font-family="'Cinzel', Georgia, serif" font-size="34" font-weight="700"
+                text-anchor="middle" fill="url(#goldGradient)" letter-spacing="1">E</text>
+
+              <!-- Ramo de Oliveira / Louros decorativos inferiores -->
+              <path d="M38 73C42 81 49 85 60 85C71 85 78 81 82 73" stroke="url(#goldGradient)" stroke-width="1.8"
+                stroke-linecap="round" fill="none" />
+              <circle cx="60" cy="85" r="2" fill="url(#goldGradient)" />
+
+              <!-- Estrelas ou gemas decorativas laterais -->
+              <path d="M32 58L33.5 54L35 58L39 59.5L35 61L33.5 65L32 61L28 59.5L32 58Z" fill="url(#goldGradient)"
+                opacity="0.9" />
+              <path d="M88 58L89.5 54L91 58L95 59.5L91 61L89.5 65L88 61L84 59.5L88 58Z" fill="url(#goldGradient)"
+                opacity="0.9" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Nome do Restaurante & Subtítulo -->
+      <h1 class="brand-title">EMPORIO GOURMET</h1>
+      <p class="brand-subtitle">VINHOS & GASTRONOMIA</p>
+
+      <!-- Divisor Ornamental Dourado -->
+      <div class="ornament-divider" aria-hidden="true">
+        <span class="line"></span>
+        <span class="symbol">◆</span>
+        <span class="line"></span>
+      </div>
+
+      <!-- Biografia Curta e Sofisticada --
+      <p class="brand-bio">
+        Ambiente sofisticado, sabores inesquecíveis.<br>Bem-vindo ao Emporio.
+      </p>    -->
+
+      <!-- Badge de Status / Excelência -->
+      <div class="status-badge" aria-label="Restaurante aberto para atendimento">
+        <span class="status-pulse" aria-hidden="true"></span>
+        <span class="status-text">onde sabores se encontram com vinhos selecionados</span>
+      </div>
+    </header>
+
+    <!-- 2. Redes Sociais e Contatos -->
+    <nav class="social-links-section" aria-label="Canais de Contato e Redes Sociais">
+      <ul class="social-list">
+
+        <!-- Instagram -->
+        <li>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+            aria-label="Siga o Emporio no Instagram">
+            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span class="social-label">Instagram</span>
+          </a>
+        </li>
+
+        <!-- WhatsApp -->
+        <li>
+          <a data-wa href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20o%20Emporio."
+            target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Converse conosco no WhatsApp">
+            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+              </path>
+            </svg>
+            <span class="social-label">WhatsApp</span>
+          </a>
+        </li>
+
+        <!-- Localização / Google Maps -->
+        <li>
+          <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+            aria-label="Ver nossa localização no Google Maps">
+            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span class="social-label">Localização</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <!-- 3. Botões de Ação Principais (Cartões Largos com Destaque Dourado) -->
+    <section class="action-buttons-section" aria-label="Acesso ao Cardápio e Pedidos">
+
+      <!-- Botão 1: Cardápio da Mesa -->
+      <a href="cardapio_local/cardapio-mesa.html" class="action-card" id="btn-cardapio-mesa">
+        <div class="card-glow" aria-hidden="true"></div>
+        <div class="card-shimmer" aria-hidden="true"></div>
+
+        <!-- Ícone Temático Mesa (Cloche/Talheres) -->
+        <div class="card-icon-box">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <!-- Cloche / Prato Gourmet -->
+            <path d="M12 4V2" />
+            <path d="M4 14C4 9.58 7.58 6 12 6C16.42 6 20 9.58 20 14H4Z" />
+            <path d="M2 18H22" />
+            <path d="M6 18V20" />
+            <path d="M18 18V20" />
+            <circle cx="12" cy="2" r="1" fill="currentColor" />
+          </svg>
+        </div>
+
+        <!-- Conteúdo Textual -->
+        <div class="card-content">
+          <div class="card-tag">NO SALÃO</div>
+          <h2 class="card-title">CARDÁPIO DA MESA</h2>
+          <p class="card-subtitle">Apenas Catálogo / Consulta</p>
+        </div>
+
+        <!-- Seta de Navegação -->
+        <div class="card-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- Botão 2: Pedir de Casa / Delivery -->
+      <a href="cardapio_delivery/index-arquivo-unico.html" class="action-card highlight" id="btn-delivery">
+        <div class="card-glow" aria-hidden="true"></div>
+        <div class="card-shimmer" aria-hidden="true"></div>
+
+        <!-- Ícone Temático Delivery (Sacola Gourmet / Entrega) -->
+        <div class="card-icon-box">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+
+        <!-- Conteúdo Textual -->
+        <div class="card-content">
+          <div class="card-tag gold">FAÇA SEU PEDIDO</div>
+          <h2 class="card-title">PEDIR DE CASA / DELIVERY</h2>
+          <p class="card-subtitle">Peça com entrega rápida</p>
+        </div>
+
+        <!-- Seta de Navegação -->
+        <div class="card-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- Rodapé Discreto e Elegante -->
+    <footer class="profile-footer">
+      <p class="footer-hours" data-horario>Terça a Domingo • 19h às 23h30</p>
+      <p class="footer-copy">© Emporio Grelhados & Vinhos • Todos os direitos reservados</p>
+    </footer>
+
+  </main>
+<script src="cardapio-nuvem.js"></script>
+<script>
+/* WhatsApp e horário vêm do painel de gestão; se não carregar, ficam os valores da página. */
+if (window.CardapioNuvem) CardapioNuvem.carregar().then(function (d) {
+  if (!d || !d.config) return;
+  var w = d.config.delivery && d.config.delivery.whatsapp, h = d.config.restaurante && d.config.restaurante.horario;
+  if (w) document.querySelectorAll('[data-wa]').forEach(function (a) { a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + w); });
+  if (h) document.querySelectorAll('[data-horario]').forEach(function (e) { e.textContent = h; });
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel de Gestão · Emporio Gourmet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Acesso por PIN -->
+<div class="bloqueio" id="bloqueio">
+  <form id="formPin" class="pin-box" onsubmit="return false">
+    <h1>Painel de Gestão</h1>
+    <p>Entre com seu e-mail e senha.</p>
+    <input type="email" id="loginEmail" autocomplete="username" placeholder="E-mail" aria-label="E-mail" autofocus>
+    <input type="password" id="loginSenha" autocomplete="current-password" placeholder="Senha" aria-label="Senha">
+    <p class="erro" id="pinErro" hidden></p>
+    <p class="erro" id="pinAjuda" hidden>Os arquivos do painel não foram carregados. Deixe index.html, style.css e app.js na mesma pasta, ou abra o index-arquivo-unico.html.</p>
+    <button class="btn ouro" type="button" id="entrar">Entrar</button>
+  </form>
+</div>
+
+<header class="topo">
+  <div class="marca">
+    <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logotipo Emporio Gourmet">
+      <circle cx="32" cy="32" r="29" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="24.5" fill="none" stroke="#d4af37" stroke-width=".6"/>
+      <path d="M20 22h24M20 32h18M20 42h24M20 22v20" fill="none" stroke="#d4af37" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <h1>EMPORIO GOURMET<small>PAINEL DE GESTÃO</small></h1>
+  </div>
+  <div class="topo-acoes">
+    <span class="nuvem" id="nuvemStatus" role="status"></span>
+    <a class="btn fino" data-url="mesa" target="_blank" rel="noopener">Cardápio da mesa ↗</a>
+    <a class="btn fino" data-url="delivery" target="_blank" rel="noopener">Delivery ↗</a>
+    <button class="btn fino" id="sair">Sair</button>
+  </div>
+</header>
+
+<nav class="abas" role="tablist" aria-label="Menu do painel">
+  <button class="aba" role="tab" data-aba="dashboard" aria-selected="true">Dashboard</button>
+  <button class="aba" role="tab" data-aba="pratos" aria-selected="false">Pratos <span id="nPratos"></span></button>
+  <button class="aba" role="tab" data-aba="precos" aria-selected="false">Preços</button>
+  <button class="aba" role="tab" data-aba="ingredientes" aria-selected="false">Ingredientes <span id="nIng"></span></button>
+  <button class="aba" role="tab" data-aba="delivery" aria-selected="false">Delivery</button>
+  <button class="aba" role="tab" data-aba="mesa" aria-selected="false">Cardápio da mesa</button>
+  <button class="aba" role="tab" data-aba="sistema" aria-selected="false">Sistema</button>
+  <button class="aba" role="tab" data-aba="dados" aria-selected="false">Backup e publicação</button>
+</nav>
+
+<main>
+  <!-- DASHBOARD -->
+  <section id="aba-dashboard">
+    <h2 class="tit">Visão geral do cardápio</h2>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid2">
+      <div class="cartao"><h2>Pratos por categoria</h2><div id="grafCat"></div></div>
+      <div class="cartao"><h2>Atenção</h2><ul class="alertas" id="alertas"></ul></div>
+    </div>
+    <div class="grid2">
+      <div class="cartao"><h2>Ingredientes mais usados</h2><div id="topIng"></div></div>
+      <div class="cartao"><h2>Operação do delivery</h2><div id="operacao"></div></div>
+    </div>
+  </section>
+
+  <!-- PRATOS -->
+  <section id="aba-pratos" hidden>
+    <div class="barra">
+      <input type="search" id="busca" placeholder="Buscar prato..." aria-label="Buscar prato">
+      <select id="filtroCat" aria-label="Filtrar por categoria"></select>
+      <select id="filtroStatus" aria-label="Filtrar por situação">
+        <option value="">Todos</option>
+        <option value="ativo">Ativos</option>
+        <option value="inativo">Desativados</option>
+        <option value="falta">Sem ingrediente</option>
+      </select>
+      <button class="btn ouro" id="novoPrato">+ Novo prato</button>
+    </div>
+    <ul class="lista" id="listaPratos"></ul>
+  </section>
+
+  <!-- INGREDIENTES -->
+  <section id="aba-ingredientes" hidden>
+    <p class="dica">Desativar um ingrediente deixa indisponíveis, automaticamente, todos os pratos que o utilizam.</p>
+    <form class="barra" id="formIng" onsubmit="return false">
+      <input type="text" id="novoIng" placeholder="Novo ingrediente (ex.: Salmão)" aria-label="Nome do novo ingrediente" maxlength="60">
+      <button class="btn ouro" type="button" id="addIng">Adicionar</button>
+    </form>
+    <ul class="lista" id="listaIng"></ul>
+  </section>
+
+  <!-- PREÇOS -->
+  <section id="aba-precos" hidden>
+    <div class="cartao">
+      <h2>Reajuste em massa</h2>
+      <p>Aumente ou reduza os preços por porcentagem. Use valores negativos para desconto (ex.: -5).</p>
+      <div class="barra">
+        <select id="precoCat" aria-label="Categoria do reajuste"></select>
+        <input type="text" id="precoPct" inputmode="decimal" placeholder="Reajuste em % (ex.: 10)" aria-label="Porcentagem de reajuste">
+        <button class="btn ouro" type="button" id="aplicarPct">Aplicar reajuste</button>
+      </div>
+    </div>
+    <p class="dica">Ou edite o preço de cada prato abaixo. A alteração é salva ao sair do campo.</p>
+    <ul class="lista" id="listaPrecos"></ul>
+  </section>
+
+  <!-- DELIVERY -->
+  <section id="aba-delivery" hidden>
+    <div class="cartao"><h2>Configurações do delivery</h2><div class="cfg" id="cfg-delivery"></div></div>
+    <a class="btn" data-url="delivery" target="_blank" rel="noopener">Abrir área de delivery ↗</a>
+  </section>
+
+  <!-- MESA -->
+  <section id="aba-mesa" hidden>
+    <div class="cartao"><h2>Configurações do cardápio da mesa</h2><div class="cfg" id="cfg-mesa"></div></div>
+    <a class="btn" data-url="mesa" target="_blank" rel="noopener">Abrir cardápio da mesa ↗</a>
+  </section>
+
+  <!-- SISTEMA -->
+  <section id="aba-sistema" hidden>
+    <div class="cartao"><h2>Dados do restaurante e do sistema</h2><div class="cfg" id="cfg-sistema"></div></div>
+    <div class="cartao">
+      <h2>Acesso ao painel</h2>
+      <p>O painel usa o login do Firebase (e-mail e senha). Só a conta cadastrada nas regras do banco consegue alterar o cardápio.</p>
+      <p class="meta" id="contaAtual"></p>
+      <button class="btn" type="button" id="resetSenha">Enviar e-mail para redefinir a senha</button>
+    </div>
+  </section>
+
+  <!-- DADOS -->
+  <section id="aba-dados" hidden>
+    <div class="cartao">
+      <h2>Publicação no Firebase</h2>
+      <p>As alterações são enviadas sozinhas ao Firebase poucos segundos depois de cada mudança, e os cardápios da mesa e do delivery passam a mostrá-las. Use o botão abaixo para forçar o envio agora.</p>
+      <button class="btn ouro" type="button" id="publicarAgora">Publicar agora</button>
+    </div>
+    <div class="cartao">
+      <h2>Backup</h2>
+      <p>Guarde uma cópia dos dados ou restaure uma cópia anterior.</p>
+      <div class="acoes">
+        <button class="btn" id="baixarJson">Exportar backup (.json)</button>
+        <label class="btn" for="importar">Importar backup</label>
+        <input type="file" id="importar" accept="application/json,.json" hidden>
+        <button class="btn perigo" id="restaurar">Restaurar cardápio padrão</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal de prato -->
+<dialog id="dlgPrato">
+  <form id="formPrato" onsubmit="return false" novalidate>
+    <div class="dlg-topo">
+      <h2 id="dlgTitulo">Novo prato</h2>
+      <button type="button" class="fechar" data-fechar aria-label="Fechar">✕</button>
+    </div>
+    <div class="dlg-corpo">
+      <label class="campo">Nome do prato
+        <input type="text" name="nome" maxlength="80" required>
+      </label>
+      <div class="duas">
+        <label class="campo">Categoria
+          <select name="cat"></select>
+        </label>
+        <label class="campo">Preço (R$)
+          <input type="text" name="preco" inputmode="decimal" placeholder="0,00" required>
+        </label>
+      </div>
+      <label class="campo">Descrição
+        <textarea name="desc" rows="2" maxlength="220"></textarea>
+      </label>
+      <fieldset class="ings" id="fotoBox">
+        <legend>Foto do prato</legend>
+        <div class="foto-linha">
+          <img id="fotoPrev" class="foto-prev" alt="Pré-visualização da foto" hidden>
+          <div id="fotoVazia" class="foto-prev foto-vazia">Sem foto</div>
+          <div class="foto-acoes">
+            <label class="btn fino" for="fotoArq">Enviar foto do aparelho</label>
+            <input type="file" id="fotoArq" accept="image/*" hidden>
+            <button type="button" class="btn fino perigo" id="fotoRemover" hidden>Remover foto</button>
+            <small id="fotoInfo">Escolha da galeria ou tire uma foto agora (no celular). Ela é reduzida automaticamente. Você também pode arrastar uma imagem para cá.</small>
+          </div>
+        </div>
+        <label class="campo">Ou cole o endereço (URL) de uma imagem
+          <input type="url" name="img" placeholder="https://...">
+        </label>
+      </fieldset>
+
+      <fieldset class="ings">
+        <legend>Ingredientes do prato</legend>
+        <div class="checks" id="checksIng"></div>
+        <div class="inline">
+          <input type="text" id="ingRapido" placeholder="Novo ingrediente" aria-label="Novo ingrediente" maxlength="60">
+          <button type="button" class="btn fino" id="addIngRapido">Adicionar</button>
+        </div>
+      </fieldset>
+
+      <div class="duas opcoes">
+        <label class="chk"><input type="checkbox" name="destaque"> Mostrar em Destaques</label>
+        <label class="chk"><input type="checkbox" name="ativo"> Prato ativo no cardápio</label>
+      </div>
+      <p class="erro" id="erroPrato" hidden></p>
+    </div>
+    <div class="dlg-rodape">
+      <button type="button" class="btn" data-fechar>Cancelar</button>
+      <button type="button" class="btn ouro" id="salvarPrato">Salvar prato</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlgPergunta">
+  <div class="dlg-topo"><h2 id="pgTitulo">Confirmar</h2></div>
+  <div class="dlg-corpo">
+    <p id="pgMsg"></p>
+    <input type="text" id="pgInput" aria-label="Valor" hidden>
+  </div>
+  <div class="dlg-rodape">
+    <button type="button" class="btn" id="pgNao">Cancelar</button>
+    <button type="button" class="btn ouro" id="pgSim">Confirmar</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+<script>window.addEventListener("load",function(){if(!window.__painelOk){document.getElementById("pinAjuda").hidden=false}})</script>
+</body>
+</html>

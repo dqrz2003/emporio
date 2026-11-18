@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Delivery · Emporio Gourmet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a; --wood:#2c1810; --wood-2:#3d2314; --gold:#d4af37;
+  --gold-soft:rgba(212,175,55,.35); --text:#f1e9dc; --muted:#b9a68f; --danger:#e57373;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Jost','Segoe UI',system-ui,sans-serif;
+  --topo-h:96px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.travado{overflow:hidden}
+button{font-family:inherit}
+[hidden]{display:none!important}
+
+/* Cabeçalho */
+.topo{position:sticky;top:0;z-index:20;background:linear-gradient(var(--wood),#1d0f09);border-bottom:1px solid var(--gold);padding-top:env(safe-area-inset-top,0)}
+.marca{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 16px 4px}
+.logo{width:44px;height:44px;flex:none}
+.marca h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.1rem,4.2vw,1.5rem);letter-spacing:.14em;color:var(--gold);line-height:1.1}
+.marca h1 small{display:block;font-family:var(--sans);font-weight:300;font-size:.62em;letter-spacing:.3em;color:var(--text);margin-top:3px}
+.infos{text-align:center;font-size:.8rem;color:var(--muted);padding:0 16px 10px}
+.infos b{color:var(--gold);font-weight:400}
+
+/* Abas */
+.sticky-wrap{position:sticky;top:var(--topo-h);z-index:15}
+.abas{display:flex;gap:8px;overflow-x:auto;padding:10px 16px 12px;scrollbar-width:none;background:var(--bg);border-bottom:1px solid var(--wood-2)}
+.abas::-webkit-scrollbar{display:none}
+.aba{flex:none;font:400 .9rem var(--sans);color:var(--muted);background:transparent;border:1px solid var(--wood-2);border-radius:999px;padding:8px 18px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.aba:hover{border-color:var(--gold-soft);color:var(--text)}
+.aba[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#1a0f08;font-weight:500}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* Conteúdo */
+main{max-width:1100px;margin:0 auto;padding:28px 16px calc(120px + env(safe-area-inset-bottom,0))}
+.secao-titulo{text-align:center;font-family:var(--serif);font-weight:600;font-size:clamp(1.8rem,6vw,2.5rem);color:var(--gold)}
+.secao-sub{text-align:center;color:var(--muted);margin-bottom:28px;font-family:var(--serif);font-style:italic;font-size:1.1rem}
+.grade{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:640px){.grade{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.grade{grid-template-columns:repeat(3,1fr)}}
+
+.prato{background:linear-gradient(160deg,var(--wood-2),var(--wood));border:1px solid var(--gold-soft);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.foto{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,var(--wood-2),#1a0d07);overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 60%,rgba(44,24,16,.85))}
+.selo{position:absolute;top:10px;left:10px;z-index:2;background:rgba(10,10,10,.75);border:1px solid var(--gold);color:var(--gold);font-size:.72rem;padding:3px 10px;border-radius:999px}
+.info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.linha{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.prato h3{font-family:var(--serif);font-weight:600;font-size:1.4rem;line-height:1.15}
+.preco{font-family:var(--serif);font-weight:700;font-size:1.45rem;color:var(--gold);white-space:nowrap}
+.desc{color:var(--muted);font-size:.9rem}
+.ctrl{margin-top:auto;padding-top:12px;border-top:1px solid var(--gold-soft);display:flex;justify-content:flex-end}
+
+/* Botões de adicionar / quantidade */
+.btn-add{background:var(--gold);color:#1a0f08;border:0;border-radius:999px;padding:10px 22px;font-weight:500;font-size:.92rem;cursor:pointer;transition:filter .2s}
+.btn-add:hover{filter:brightness(1.1)}
+.qtd{display:inline-flex;align-items:center;border:1px solid var(--gold);border-radius:999px;overflow:hidden}
+.qtd button{width:40px;height:38px;background:transparent;border:0;color:var(--gold);font-size:1.3rem;cursor:pointer}
+.qtd button:hover{background:rgba(212,175,55,.15)}
+.qtd output{min-width:32px;text-align:center;font-weight:500;color:var(--text)}
+
+/* Barra do carrinho */
+.barra-carrinho{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0));z-index:30;width:min(520px,calc(100% - 32px));display:flex;align-items:center;gap:12px;background:var(--gold);color:#1a0f08;border:0;border-radius:999px;padding:12px 20px;font-size:1rem;font-weight:500;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.6)}
+.barra-carrinho span:nth-child(2){flex:1;text-align:left}
+.barra-carrinho strong{font-family:var(--serif);font-size:1.25rem}
+.bc-qtd{background:#1a0f08;color:var(--gold);border-radius:999px;min-width:28px;height:28px;display:grid;place-items:center;font-size:.85rem}
+
+/* Gaveta */
+.fundo{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:40}
+.gaveta{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:50;background:#140a06;border-left:1px solid var(--gold);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease;visibility:hidden;padding-top:env(safe-area-inset-top,0)}
+.gaveta.aberta{transform:none;visibility:visible}
+.g-topo{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--gold-soft)}
+.g-topo h2{font-family:var(--serif);color:var(--gold);font-size:1.7rem}
+.fechar{background:none;border:1px solid var(--gold-soft);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer}
+.g-corpo{flex:1;overflow-y:auto;padding:16px 18px}
+
+.itens{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;background:var(--wood);border:1px solid var(--wood-2);border-radius:6px;padding:12px}
+.item h4{font-family:var(--serif);font-size:1.15rem;font-weight:600}
+.item .sub{color:var(--gold);font-family:var(--serif);font-weight:700;font-size:1.1rem}
+.item .qtd{grid-row:span 2;grid-column:2;grid-row:1/3}
+.vazio{text-align:center;color:var(--muted);padding:24px 0;font-style:italic}
+
+/* Formulário */
+.tipo{border:0;display:flex;gap:10px;margin-bottom:14px}
+.tipo legend{font-size:.85rem;color:var(--muted);margin-bottom:8px}
+.tipo label{flex:1;cursor:pointer}
+.tipo input{position:absolute;opacity:0}
+.tipo span{display:block;text-align:center;border:1px solid var(--wood-2);border-radius:6px;padding:10px;color:var(--muted);transition:.2s}
+.tipo input:checked + span{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08)}
+.tipo input:focus-visible + span{outline:2px solid var(--gold);outline-offset:2px}
+.campo{display:block;font-size:.85rem;color:var(--muted);margin-bottom:12px}
+.campo input,.campo select,.campo textarea{display:block;width:100%;margin-top:5px;background:var(--wood);border:1px solid var(--wood-2);border-radius:6px;color:var(--text);font:400 1rem var(--sans);padding:11px 12px}
+.campo input:focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--gold)}
+.campo .invalido{border-color:var(--danger)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.erro{color:var(--danger);font-size:.88rem;margin-bottom:8px}
+
+.g-rodape{border-top:1px solid var(--gold);padding:14px 18px calc(14px + env(safe-area-inset-bottom,0));background:var(--wood)}
+.totais div{display:flex;justify-content:space-between;font-size:.92rem;color:var(--muted);padding:2px 0}
+.totais .total{color:var(--text);font-size:1.1rem;padding-top:8px;margin-top:6px;border-top:1px solid var(--gold-soft)}
+.totais .total dd{font-family:var(--serif);font-weight:700;font-size:1.5rem;color:var(--gold)}
+.btn-enviar{width:100%;margin-top:12px;background:var(--gold);color:#1a0f08;border:0;border-radius:6px;padding:14px;font-size:1rem;font-weight:500;cursor:pointer}
+.btn-enviar:disabled{opacity:.4;cursor:not-allowed}
+
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0));transform:translate(-50%,-150%);z-index:60;background:var(--wood-2);border:1px solid var(--gold);color:var(--text);padding:10px 18px;border-radius:999px;font-size:.9rem;transition:transform .3s;max-width:calc(100% - 32px)}
+.toast.ativo{transform:translate(-50%,0)}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+.pausa{margin:0 16px 10px;padding:8px 12px;text-align:center;border:1px solid #e57373;border-radius:6px;color:#e57373;font-size:.85rem}
+</style>
+<script src="../cardapio-nuvem.js"></script>
+</head>
+<body>
+
+<header class="topo" id="topo">
+  <div class="marca">
+    <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logotipo Emporio Gourmet">
+      <circle cx="32" cy="32" r="29" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="24.5" fill="none" stroke="#d4af37" stroke-width=".6"/>
+      <path d="M20 22h24M20 32h18M20 42h24M20 22v20" fill="none" stroke="#d4af37" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <h1>EMPORIO GOURMET<small>DELIVERY</small></h1>
+  </div>
+  <p class="infos" id="infos"></p>
+</header>
+
+<div class="sticky-wrap" id="abasWrap">
+  <nav class="abas" role="tablist" aria-label="Categorias do cardápio" id="abas"></nav>
+</div>
+
+<main id="conteudo"></main>
+
+<!-- Barra do carrinho -->
+<button class="barra-carrinho" id="barraCarrinho" hidden>
+  <span class="bc-qtd" id="bcQtd">0</span>
+  <span>Ver meu pedido</span>
+  <strong id="bcTotal">R$ 0,00</strong>
+</button>
+
+<!-- Gaveta do carrinho -->
+<div class="fundo" id="fundo" hidden></div>
+<aside class="gaveta" id="gaveta" role="dialog" aria-modal="true" aria-labelledby="gavetaTitulo" aria-hidden="true">
+  <div class="g-topo">
+    <h2 id="gavetaTitulo">Meu pedido</h2>
+    <button class="fechar" id="fechar" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="g-corpo">
+    <ul class="itens" id="itens"></ul>
+    <p class="vazio" id="vazio">Seu pedido está vazio. Escolha um prato no cardápio.</p>
+
+    <form id="form" novalidate>
+      <fieldset class="tipo">
+        <legend>Como você quer receber?</legend>
+        <label><input type="radio" name="tipo" value="entrega" checked><span>Entrega</span></label>
+        <label><input type="radio" name="tipo" value="retirada"><span>Retirar no local</span></label>
+      </fieldset>
+
+      <label class="campo">Seu nome
+        <input type="text" name="nome" autocomplete="name" required>
+      </label>
+      <label class="campo">Telefone (WhatsApp)
+        <input type="tel" name="telefone" autocomplete="tel" inputmode="tel" placeholder="(88) 90000-0000" required>
+      </label>
+
+      <div id="blocoEndereco">
+        <label class="campo">Rua e número
+          <input type="text" name="rua" autocomplete="street-address">
+        </label>
+        <div class="duas">
+          <label class="campo">Bairro
+            <input type="text" name="bairro">
+          </label>
+          <label class="campo">Complemento
+            <input type="text" name="complemento" placeholder="Opcional">
+          </label>
+        </div>
+      </div>
+
+      <label class="campo">Forma de pagamento
+        <select name="pagamento" required>
+          <option value="Pix">Pix</option>
+          <option value="Cartão na entrega">Cartão na entrega</option>
+          <option value="Dinheiro">Dinheiro</option>
+        </select>
+      </label>
+      <label class="campo" id="campoTroco" hidden>Troco para quanto?
+        <input type="text" name="troco" inputmode="decimal" placeholder="Ex.: 100">
+      </label>
+
+      <label class="campo">Observações do pedido
+        <textarea name="obs" rows="2" placeholder="Ex.: carne ao ponto, sem cebola"></textarea>
+      </label>
+
+      <p class="erro" id="erro" role="alert" hidden></p>
+    </form>
+  </div>
+
+  <div class="g-rodape">
+    <dl class="totais">
+      <div><dt>Subtotal</dt><dd id="tSub">R$ 0,00</dd></div>
+      <div><dt>Taxa de entrega</dt><dd id="tTaxa">R$ 0,00</dd></div>
+      <div class="total"><dt>Total</dt><dd id="tTotal">R$ 0,00</dd></div>
+    </dl>
+    <button class="btn-enviar" id="enviar" type="button">Enviar pedido pelo WhatsApp</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================
+   EMPORIO GOURMET · DELIVERY
+   Edite a seção CONFIGURAÇÃO e os dados do cardápio.
+   ===================================================== */
+
+/* ====== CONFIGURAÇÃO ====== */
+const CONFIG = {
+  whatsapp: '558491846192',   // DDI + DDD + número, somente dígitos
+  taxaEntrega: 8,              // em reais
+  pedidoMinimo: 40,            // em reais (subtotal)
+  tempoEstimado: '40 a 60 min',
+  freteGratisAcima: 0,         // 0 = sem frete grátis
+  aberto: true,                // false = delivery pausado
+  chaveStorage: 'emporio-delivery-carrinho'
+};
+
+/* ====== DADOS DO CARDÁPIO ====== */
+const VAZIA = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const IMG = id => !id || id.startsWith('foto:') ? VAZIA : /^(https?:|data:)/.test(id) ? id : `https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=80`;
+const dataFoto = id => id && id.startsWith('foto:') ? `data-foto="${id}"` : '';
+
+const CATEGORIAS = [
+  { id: 'destaques',  nome: 'Destaques',          sub: 'As escolhas preferidas da casa' },
+  { id: 'entradas',   nome: 'Entradas',           sub: 'Para começar com elegância' },
+  { id: 'principais', nome: 'Pratos Principais',  sub: 'Receitas autorais, preparadas na hora' },
+  { id: 'vinhos',     nome: 'Vinhos & Grelhados', sub: 'Brasa, fogo e a harmonização certa' },
+  { id: 'sobremesas', nome: 'Sobremesas',         sub: 'O encerramento perfeito' }
+];
+
+const PRATOS = [
+  { id: 'e1', cat: 'entradas', nome: 'Carpaccio de Filé Mignon', desc: 'Lâminas finas de filé, rúcula, lascas de parmesão, alcaparras e azeite trufado.', preco: 48, img: 'photo-1546069901-ba9599a7e63c' },
+  { id: 'e2', cat: 'entradas', nome: 'Bruschetta Burrata', desc: 'Pão de fermentação natural, burrata cremosa, tomate confit e manjericão fresco.', preco: 42, img: 'photo-1482049016688-2d3e1b311543' },
+  { id: 'e3', cat: 'entradas', nome: 'Camarões ao Alho e Ervas', desc: 'Camarões salteados na manteiga clarificada com alho dourado e limão siciliano.', preco: 62, img: 'photo-1559847844-5315695dadae', destaque: true },
+
+  { id: 'p1', cat: 'principais', nome: 'Risoto de Cogumelos Frescos', desc: 'Arroz arbóreo, mix de cogumelos, vinho branco, manteiga e parmesão envelhecido.', preco: 74, img: 'photo-1476224203421-9ac39bcb3327' },
+  { id: 'p2', cat: 'principais', nome: 'Salmão ao Molho de Maracujá', desc: 'Filé de salmão selado, purê de baroa, aspargos e redução de maracujá.', preco: 89, img: 'photo-1414235077428-338989a2e8c0', destaque: true },
+  { id: 'p3', cat: 'principais', nome: 'Fettuccine ao Funghi', desc: 'Massa fresca da casa, creme de leite, funghi secchi e toque de noz-moscada.', preco: 68, img: 'photo-1565299624946-b28f40a0ae38' },
+
+  { id: 'v1', cat: 'vinhos', nome: 'Ancho na Brasa', desc: '400 g de ancho maturado, batatas rústicas, farofa de alho e vinagrete da casa.', preco: 128, img: 'photo-1544025162-d76694265947', destaque: true },
+  { id: 'v2', cat: 'vinhos', nome: 'Espetinho Misto Gourmet', desc: 'Filé, frango e linguiça artesanal grelhados, com mandioca e molho chimichurri.', preco: 79, img: 'photo-1555939594-58d7cb561ad1' },
+  { id: 'v3', cat: 'vinhos', nome: 'Vinho Tinto Reserva (garrafa)', desc: 'Seleção do sommelier, encorpado, com notas de frutas negras.', preco: 149, img: 'photo-1510812431401-41d2bd2722f3' },
+
+  { id: 's1', cat: 'sobremesas', nome: 'Petit Gâteau de Chocolate', desc: 'Bolo quente de chocolate belga com centro cremoso e sorvete de baunilha.', preco: 36, img: 'photo-1488477181946-6428a0291777', destaque: true },
+  { id: 's2', cat: 'sobremesas', nome: 'Panqueca de Doce de Leite', desc: 'Massa leve, doce de leite artesanal, banana caramelizada e castanhas.', preco: 32, img: 'photo-1567620905732-2d1ec7ab7445' },
+  { id: 's3', cat: 'sobremesas', nome: 'Sorvete Artesanal', desc: 'Três bolas à escolha: baunilha, pistache ou frutas vermelhas, com calda quente.', preco: 28, img: 'photo-1563805042-7684c019e1cb' }
+];
+
+/* ====== UTILITÁRIOS ====== */
+const $ = s => document.querySelector(s);
+const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const porId = id => PRATOS.find(p => p.id === id);
+const nomeCat = id => CATEGORIAS.find(c => c.id === id).nome;
+
+/* ====== ESTADO (carrinho) ====== */
+let carrinho = {};      // { idDoPrato: quantidade }
+let catAtual = 'destaques';
+
+function carregar() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CONFIG.chaveStorage) || '{}');
+    Object.keys(salvo).forEach(id => { if (porId(id) && salvo[id] > 0) carrinho[id] = salvo[id]; });
+  } catch (e) { carrinho = {}; }
+}
+function salvar() {
+  try { localStorage.setItem(CONFIG.chaveStorage, JSON.stringify(carrinho)); } catch (e) { /* sem storage */ }
+}
+
+const tipoEntrega = () => document.querySelector('input[name="tipo"]:checked').value;
+const totalItens = () => Object.values(carrinho).reduce((a, b) => a + b, 0);
+const subtotal = () => Object.entries(carrinho).reduce((s, [id, q]) => s + porId(id).preco * q, 0);
+const taxa = () => (tipoEntrega() === 'entrega' && subtotal() > 0 && !(CONFIG.freteGratisAcima > 0 && subtotal() >= CONFIG.freteGratisAcima) ? CONFIG.taxaEntrega : 0);
+
+function alterar(id, delta) {
+  const nova = (carrinho[id] || 0) + delta;
+  if (nova <= 0) delete carrinho[id]; else carrinho[id] = Math.min(nova, 20);
+  salvar();
+  atualizarControle(id);
+  atualizarCarrinho();
+}
+
+/* ====== CARDÁPIO ====== */
+function htmlControle(id) {
+  const q = carrinho[id] || 0;
+  if (!q) return `<button class="btn-add" data-acao="mais" data-id="${id}">Adicionar</button>`;
+  return `<div class="qtd">
+    <button data-acao="menos" data-id="${id}" aria-label="Remover um">−</button>
+    <output>${q}</output>
+    <button data-acao="mais" data-id="${id}" aria-label="Adicionar mais um">+</button>
+  </div>`;
+}
+
+function atualizarControle(id) {
+  const el = document.querySelector(`.ctrl[data-id="${id}"]`);
+  if (el) el.innerHTML = htmlControle(id);
+}
+
+function cardHTML(p, mostrarCat) {
+  return `<article class="prato">
+    <div class="foto">
+      ${mostrarCat ? `<span class="selo">${nomeCat(p.cat)}</span>` : ''}
+      <img src="${IMG(p.img)}" ${dataFoto(p.img)} alt="${p.nome}" loading="lazy">
+    </div>
+    <div class="info">
+      <div class="linha"><h3>${p.nome}</h3><span class="preco">${brl(p.preco)}</span></div>
+      <p class="desc">${p.desc}</p>
+      <div class="ctrl" data-id="${p.id}">${htmlControle(p.id)}</div>
+    </div>
+  </article>`;
+}
+
+function mostrarCategoria(id, rolar = true) {
+  catAtual = id;
+  const cat = CATEGORIAS.find(c => c.id === id);
+  const lista = id === 'destaques' ? PRATOS.filter(p => p.destaque) : PRATOS.filter(p => p.cat === id);
+  $('#conteudo').innerHTML =
+    `<h2 class="secao-titulo">${cat.nome}</h2><p class="secao-sub">${cat.sub}</p>
+     <div class="grade">${lista.map(p => cardHTML(p, id === 'destaques')).join('')}</div>`;
+  document.querySelectorAll('#conteudo img').forEach(img => img.addEventListener('error', () => img.remove()));
+  window.CardapioNuvem && CardapioNuvem.resolverImagens($('#conteudo'));
+  document.querySelectorAll('.aba').forEach(b => b.setAttribute('aria-selected', b.dataset.id === id));
+  if (rolar) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function montarAbas() {
+  const nav = $('#abas');
+  CATEGORIAS.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'aba'; b.role = 'tab'; b.dataset.id = c.id; b.textContent = c.nome;
+    b.addEventListener('click', () => {
+      mostrarCategoria(c.id);
+      b.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    });
+    nav.appendChild(b);
+  });
+}
+
+/* ====== CARRINHO (barra + gaveta) ====== */
+function atualizarCarrinho() {
+  const qtd = totalItens();
+  const sub = subtotal();
+  const tx = taxa();
+
+  $('#barraCarrinho').hidden = qtd === 0;
+  $('#bcQtd').textContent = qtd;
+  $('#bcTotal').textContent = brl(sub + tx);
+
+  $('#vazio').hidden = qtd > 0;
+  $('#itens').innerHTML = Object.entries(carrinho).map(([id, q]) => {
+    const p = porId(id);
+    return `<li class="item">
+      <h4>${p.nome}</h4>
+      <div class="qtd">
+        <button data-acao="menos" data-id="${id}" aria-label="Remover um">−</button>
+        <output>${q}</output>
+        <button data-acao="mais" data-id="${id}" aria-label="Adicionar mais um">+</button>
+      </div>
+      <span class="sub">${brl(p.preco * q)}</span>
+    </li>`;
+  }).join('');
+
+  $('#tSub').textContent = brl(sub);
+  $('#tTaxa').textContent = tipoEntrega() === 'entrega' ? brl(tx) : 'Grátis (retirada)';
+  $('#tTotal').textContent = brl(sub + tx);
+  $('#enviar').disabled = qtd === 0;
+
+  if (qtd === 0 && $('#gaveta').classList.contains('aberta')) abrirGaveta(false);
+}
+
+function abrirGaveta(abrir) {
+  $('#gaveta').classList.toggle('aberta', abrir);
+  $('#gaveta').setAttribute('aria-hidden', String(!abrir));
+  $('#fundo').hidden = !abrir;
+  document.body.classList.toggle('travado', abrir);
+  if (abrir) $('#fechar').focus(); else $('#barraCarrinho').focus?.();
+}
+
+function avisar(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('ativo');
+  clearTimeout(avisar.t);
+  avisar.t = setTimeout(() => t.classList.remove('ativo'), 2600);
+}
+
+/* ====== FORMULÁRIO E ENVIO ====== */
+function alternarCampos() {
+  const entrega = tipoEntrega() === 'entrega';
+  $('#blocoEndereco').hidden = !entrega;
+  $('#campoTroco').hidden = $('[name="pagamento"]').value !== 'Dinheiro';
+  atualizarCarrinho();
+}
+
+function mostrarErro(msg, campo) {
+  const e = $('#erro');
+  e.textContent = msg; e.hidden = false;
+  document.querySelectorAll('.invalido').forEach(c => c.classList.remove('invalido'));
+  if (campo) { campo.classList.add('invalido'); campo.focus(); }
+}
+
+function validar(f) {
+  const entrega = tipoEntrega() === 'entrega';
+  if (subtotal() < CONFIG.pedidoMinimo) return mostrarErro(`O pedido mínimo é ${brl(CONFIG.pedidoMinimo)}.`);
+  if (!f.nome.value.trim()) return mostrarErro('Informe seu nome.', f.nome);
+  if (f.telefone.value.replace(/\D/g, '').length < 10) return mostrarErro('Informe um telefone válido com DDD.', f.telefone);
+  if (entrega && !f.rua.value.trim()) return mostrarErro('Informe a rua e o número para a entrega.', f.rua);
+  if (entrega && !f.bairro.value.trim()) return mostrarErro('Informe o bairro.', f.bairro);
+  $('#erro').hidden = true;
+  document.querySelectorAll('.invalido').forEach(c => c.classList.remove('invalido'));
+  return true;
+}
+
+function montarMensagem(f) {
+  const entrega = tipoEntrega() === 'entrega';
+  const linhas = ['*NOVO PEDIDO · EMPORIO GOURMET*', ''];
+  Object.entries(carrinho).forEach(([id, q]) => {
+    const p = porId(id);
+    linhas.push(`${q}x ${p.nome} — ${brl(p.preco * q)}`);
+  });
+  linhas.push('', `Subtotal: ${brl(subtotal())}`);
+  if (entrega) linhas.push(`Taxa de entrega: ${brl(taxa())}`);
+  linhas.push(`*Total: ${brl(subtotal() + taxa())}*`, '');
+  linhas.push(`Cliente: ${f.nome.value.trim()}`, `Telefone: ${f.telefone.value.trim()}`);
+  if (entrega) {
+    linhas.push(`Entrega: ${f.rua.value.trim()}, ${f.bairro.value.trim()}` + (f.complemento.value.trim() ? ` (${f.complemento.value.trim()})` : ''));
+  } else {
+    linhas.push('Retirada no local');
+  }
+  let pag = `Pagamento: ${f.pagamento.value}`;
+  if (f.pagamento.value === 'Dinheiro' && f.troco.value.trim()) pag += ` (troco para R$ ${f.troco.value.trim()})`;
+  linhas.push(pag);
+  if (f.obs.value.trim()) linhas.push('', `Obs.: ${f.obs.value.trim()}`);
+  return linhas.join('\n');
+}
+
+function enviarPedido() {
+  if (!CONFIG.aberto) return avisar('O delivery está pausado no momento. Tente novamente mais tarde.');
+  const f = $('#form');
+  if (!validar(f)) return;
+  const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(montarMensagem(f))}`;
+  window.open(url, '_blank', 'noopener');
+  carrinho = {};
+  salvar();
+  mostrarCategoria(catAtual, false);
+  atualizarCarrinho();
+  abrirGaveta(false);
+  avisar('Pedido enviado! Aguarde a confirmação no WhatsApp.');
+}
+
+/* ====== INICIALIZAÇÃO ====== */
+/* Dados vindos do painel (Firebase). Se algo falhar, ficam os dados internos. */
+async function aplicarNuvem() {
+  if (!window.CardapioNuvem) return;
+  const dados = await CardapioNuvem.carregar();
+  if (!dados) return;
+  PRATOS.length = 0;
+  CardapioNuvem.paraPratos(dados).forEach(p => PRATOS.push(p));
+  const c = (dados.config && dados.config.delivery) || {};
+  if (c.whatsapp) CONFIG.whatsapp = c.whatsapp;
+  if (typeof c.taxaEntrega === 'number') CONFIG.taxaEntrega = c.taxaEntrega;
+  if (typeof c.pedidoMinimo === 'number') CONFIG.pedidoMinimo = c.pedidoMinimo;
+  if (typeof c.freteGratisAcima === 'number') CONFIG.freteGratisAcima = c.freteGratisAcima;
+  if (c.tempoEstimado) CONFIG.tempoEstimado = c.tempoEstimado;
+  CONFIG.aberto = c.ativo !== false;
+  const pag = { 'Pix': c.pagPix, 'Cartão na entrega': c.pagCartao, 'Dinheiro': c.pagDinheiro };
+  if (Object.values(pag).some(v => v !== false)) document.querySelectorAll('[name="pagamento"] option').forEach(o => { if (pag[o.value] === false) o.remove(); });
+  for (let i = CATEGORIAS.length - 1; i > 0 || (i === 0 && CATEGORIAS.length > 1); i--) {   // esconde categorias vazias
+    const c = CATEGORIAS[i], n = c.id === 'destaques' ? PRATOS.filter(p => p.destaque).length : PRATOS.filter(p => p.cat === c.id).length;
+    if (!n && CATEGORIAS.length > 1) CATEGORIAS.splice(i, 1);
+    if (i === 0) break;
+  }
+}
+
+function iniciar() {
+  carregar();
+  montarAbas();
+
+  $('#infos').innerHTML =
+    `Entrega em <b>${CONFIG.tempoEstimado}</b> · Taxa <b>${brl(CONFIG.taxaEntrega)}</b> · Pedido mínimo <b>${brl(CONFIG.pedidoMinimo)}</b>`;
+
+  if (!CONFIG.aberto) $('#infos').insertAdjacentHTML('afterend', '<p class="pausa">O delivery está pausado no momento. Você pode ver o cardápio, mas não enviar pedidos.</p>');
+
+  // Botões de adicionar/remover (cardápio e gaveta)
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-acao]');
+    if (!b) return;
+    alterar(b.dataset.id, b.dataset.acao === 'mais' ? 1 : -1);
+  });
+
+  $('#barraCarrinho').addEventListener('click', () => abrirGaveta(true));
+  $('#fechar').addEventListener('click', () => abrirGaveta(false));
+  $('#fundo').addEventListener('click', () => abrirGaveta(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') abrirGaveta(false); });
+
+  document.querySelectorAll('input[name="tipo"], [name="pagamento"]').forEach(el => el.addEventListener('change', alternarCampos));
+  $('#enviar').addEventListener('click', enviarPedido);
+  $('#form').addEventListener('submit', e => e.preventDefault());
+
+  const ajustar = () => document.documentElement.style.setProperty('--topo-h', $('#topo').offsetHeight + 'px');
+  window.addEventListener('resize', ajustar);
+  window.addEventListener('load', ajustar);
+  ajustar();
+
+  mostrarCategoria(CATEGORIAS[0].id, false);
+  alternarCampos();
+}
+
+$('#conteudo').innerHTML = '<p class="secao-sub" style="padding:40px 0">Carregando cardápio…</p>';
+(async () => { await aplicarNuvem(); iniciar(); })();
+
+</script>
+</body>
+</html>

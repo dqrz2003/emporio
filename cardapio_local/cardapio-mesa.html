@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cardápio da Mesa · Emporio Gourmet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a; --wood:#2c1810; --wood-2:#3d2314; --gold:#d4af37;
+  --gold-soft:rgba(212,175,55,.35); --text:#f1e9dc; --muted:#b9a68f;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Jost','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:150px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* Cabeçalho */
+.topo{position:sticky;top:0;z-index:20;background:linear-gradient(var(--wood),#1d0f09);border-bottom:1px solid var(--gold);padding-top:env(safe-area-inset-top,0)}
+.marca{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 16px 6px}
+.logo{width:46px;height:46px;flex:none}
+.marca h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.1rem,4.2vw,1.55rem);letter-spacing:.14em;color:var(--gold);line-height:1.1;text-align:left}
+.marca h1 small{display:block;font-family:var(--sans);font-weight:300;font-size:.62em;letter-spacing:.3em;color:var(--text);margin-top:3px}
+.aviso{text-align:center;font-size:.78rem;color:var(--muted);padding:0 16px 10px;font-style:italic}
+.aviso b{color:var(--gold);font-weight:400}
+
+/* Abas */
+.abas{display:flex;gap:8px;overflow-x:auto;padding:10px 16px 12px;scrollbar-width:none;background:var(--bg);border-bottom:1px solid var(--wood-2)}
+.abas::-webkit-scrollbar{display:none}
+.aba{flex:none;font:400 .9rem var(--sans);color:var(--muted);background:transparent;border:1px solid var(--wood-2);border-radius:999px;padding:8px 18px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.aba:hover{border-color:var(--gold-soft);color:var(--text)}
+.aba[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#1a0f08;font-weight:500}
+.aba:focus-visible,.prato:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sticky-wrap{position:sticky;top:var(--topo-h,96px);z-index:15}
+
+/* Conteúdo */
+main{max-width:1100px;margin:0 auto;padding:28px 16px calc(48px + env(safe-area-inset-bottom,0))}
+.secao-titulo{text-align:center;margin-bottom:6px;font-family:var(--serif);font-weight:600;font-size:clamp(1.8rem,6vw,2.5rem);color:var(--gold)}
+.secao-sub{text-align:center;color:var(--muted);font-size:.92rem;margin-bottom:28px;font-family:var(--serif);font-style:italic;font-size:1.1rem}
+.grade{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:640px){.grade{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.grade{grid-template-columns:repeat(3,1fr)}}
+
+.prato{background:linear-gradient(160deg,var(--wood-2),var(--wood));border:1px solid var(--gold-soft);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.foto{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,var(--wood-2),#1a0d07);overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 60%,rgba(44,24,16,.85))}
+.selo{position:absolute;top:10px;left:10px;z-index:2;background:rgba(10,10,10,.75);border:1px solid var(--gold);color:var(--gold);font-size:.72rem;padding:3px 10px;border-radius:999px}
+.info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.linha{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.prato h3{font-family:var(--serif);font-weight:600;font-size:1.4rem;line-height:1.15;color:var(--text)}
+.preco{font-family:var(--serif);font-weight:700;font-size:1.45rem;color:var(--gold);white-space:nowrap}
+.desc{color:var(--muted);font-size:.9rem}
+.nota{margin-top:auto;padding-top:10px;border-top:1px solid var(--gold-soft);font-size:.78rem;color:var(--muted)}
+
+.rodape{text-align:center;color:var(--muted);font-size:.8rem;padding:24px 16px 40px;border-top:1px solid var(--wood-2)}
+.rodape span{color:var(--gold)}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+.sem-fotos .foto{display:none}
+</style>
+<script src="../cardapio-nuvem.js"></script>
+</head>
+<body>
+
+<header class="topo" id="topo">
+  <div class="marca">
+    <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logotipo Emporio Gourmet">
+      <circle cx="32" cy="32" r="29" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="24.5" fill="none" stroke="#d4af37" stroke-width=".6"/>
+      <path d="M20 22h24M20 32h18M20 42h24M20 22v20" fill="none" stroke="#d4af37" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M45 28v8M42 28v5a3 3 0 0 0 6 0v-5" fill="none" stroke="#d4af37" stroke-width="1.2" stroke-linecap="round" opacity=".0"/>
+    </svg>
+    <h1>EMPORIO GOURMET<small>CARDÁPIO DA MESA</small></h1>
+  </div>
+  <p class="aviso">Cardápio para consulta no salão. <b>Consulte o garçom para fazer seu pedido.</b></p>
+</header>
+
+<div class="sticky-wrap" id="abasWrap">
+  <nav class="abas" role="tablist" aria-label="Categorias do cardápio" id="abas"></nav>
+</div>
+
+<main id="conteudo" aria-live="polite"></main>
+
+<footer class="rodape">
+  Valores em reais. Imagens meramente ilustrativas.<br>
+  <span>Emporio Gourmet</span> · Alguma restrição alimentar? Avise o garçom.
+</footer>
+
+<script>
+/* ====== DADOS DO CARDÁPIO — edite aqui ====== */
+const VAZIA = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const IMG = id => !id || id.startsWith('foto:') ? VAZIA : /^(https?:|data:)/.test(id) ? id : `https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=80`;
+const dataFoto = id => id && id.startsWith('foto:') ? `data-foto="${id}"` : '';
+
+const CATEGORIAS = [
+  { id:'destaques', nome:'Destaques', sub:'As escolhas preferidas da casa' },
+  { id:'entradas',  nome:'Entradas', sub:'Para começar a mesa com elegância' },
+  { id:'principais',nome:'Pratos Principais', sub:'Receitas autorais, preparadas na hora' },
+  { id:'vinhos',    nome:'Vinhos & Grelhados', sub:'Brasa, fogo e a harmonização certa' },
+  { id:'sobremesas',nome:'Sobremesas', sub:'O encerramento perfeito' }
+];
+
+const PRATOS = [
+  // Entradas
+  { cat:'entradas', nome:'Carpaccio de Filé Mignon', desc:'Lâminas finas de filé, rúcula, lascas de parmesão, alcaparras e azeite trufado.', preco:48, img:'photo-1546069901-ba9599a7e63c' },
+  { cat:'entradas', nome:'Bruschetta Burrata', desc:'Pão de fermentação natural, burrata cremosa, tomate confit e manjericão fresco.', preco:42, img:'photo-1482049016688-2d3e1b311543' },
+  { cat:'entradas', nome:'Camarões ao Alho e Ervas', desc:'Camarões salteados na manteiga clarificada com alho dourado e limão siciliano.', preco:62, img:'photo-1559847844-5315695dadae', destaque:true },
+  // Principais
+  { cat:'principais', nome:'Risoto de Cogumelos Frescos', desc:'Arroz arbóreo, mix de cogumelos, vinho branco, manteiga e parmesão envelhecido.', preco:74, img:'photo-1476224203421-9ac39bcb3327' },
+  { cat:'principais', nome:'Salmão ao Molho de Maracujá', desc:'Filé de salmão selado, purê de baroa, aspargos e redução de maracujá.', preco:89, img:'photo-1414235077428-338989a2e8c0', destaque:true },
+  { cat:'principais', nome:'Fettuccine ao Funghi', desc:'Massa fresca da casa, creme de leite, funghi secchi e toque de noz-moscada.', preco:68, img:'photo-1565299624946-b28f40a0ae38' },
+  // Vinhos & Grelhados
+  { cat:'vinhos', nome:'Ancho na Brasa', desc:'400 g de ancho maturado, batatas rústicas, farofa de alho e vinagrete da casa.', preco:128, img:'photo-1544025162-d76694265947', destaque:true },
+  { cat:'vinhos', nome:'Espetinho Misto Gourmet', desc:'Filé, frango e linguiça artesanal grelhados, acompanha mandioca e molho chimichurri.', preco:79, img:'photo-1555939594-58d7cb561ad1' },
+  { cat:'vinhos', nome:'Taça de Vinho Tinto Reserva', desc:'Seleção do sommelier, encorpado, notas de frutas negras. Pergunte ao garçom pelo rótulo do dia.', preco:38, img:'photo-1510812431401-41d2bd2722f3' },
+  // Sobremesas
+  { cat:'sobremesas', nome:'Petit Gâteau de Chocolate', desc:'Bolo quente de chocolate belga com centro cremoso e sorvete de baunilha.', preco:36, img:'photo-1488477181946-6428a0291777', destaque:true },
+  { cat:'sobremesas', nome:'Panqueca de Doce de Leite', desc:'Massa leve, doce de leite artesanal, banana caramelizada e castanhas.', preco:32, img:'photo-1567620905732-2d1ec7ab7445' },
+  { cat:'sobremesas', nome:'Sorvete Artesanal', desc:'Três bolas à escolha: baunilha, pistache ou frutas vermelhas, com calda quente.', preco:28, img:'photo-1563805042-7684c019e1cb' }
+];
+
+/* ====== LÓGICA ====== */
+const abasEl = document.getElementById('abas');
+const conteudo = document.getElementById('conteudo');
+const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const nomeCat = id => CATEGORIAS.find(c => c.id === id).nome;
+
+/* Dados vindos do painel (Firebase). Se algo falhar, ficam os pratos acima. */
+async function aplicarNuvem(){
+  if (!window.CardapioNuvem) return;
+  const d = await CardapioNuvem.carregar();
+  if (!d) return;
+  PRATOS.length = 0;
+  CardapioNuvem.paraPratos(d).forEach(p => PRATOS.push(p));
+  const cfg = (d.config && d.config.mesa) || {};
+  if (cfg.aviso) document.querySelector('.aviso').textContent = cfg.aviso;
+  if (cfg.mostrarFotos === false) document.body.classList.add('sem-fotos');
+  if (cfg.mostrarDestaques === false) { const i = CATEGORIAS.findIndex(c => c.id === 'destaques'); if (i >= 0) CATEGORIAS.splice(i, 1); }
+  for (let i = CATEGORIAS.length - 1; i > 0 || (i === 0 && CATEGORIAS.length > 1); i--) {   // esconde categorias vazias
+    const c = CATEGORIAS[i], n = c.id === 'destaques' ? PRATOS.filter(p => p.destaque).length : PRATOS.filter(p => p.cat === c.id).length;
+    if (!n && CATEGORIAS.length > 1) CATEGORIAS.splice(i, 1);
+    if (i === 0) break;
+  }
+}
+
+function card(p, mostrarCat){
+  const el = document.createElement('article');
+  el.className = 'prato';
+  el.innerHTML = `
+    <div class="foto">
+      ${p.destaque && !mostrarCat ? '' : ''}
+      ${mostrarCat ? `<span class="selo">${nomeCat(p.cat)}</span>` : ''}
+      <img src="${IMG(p.img)}" ${dataFoto(p.img)} alt="${p.nome}" loading="lazy">
+    </div>
+    <div class="info">
+      <div class="linha"><h3>${p.nome}</h3><span class="preco">${brl(p.preco)}</span></div>
+      <p class="desc">${p.desc}</p>
+    </div>`;
+  el.querySelector('img').addEventListener('error', e => e.target.remove());
+  return el;
+}
+
+function mostrar(id){
+  const cat = CATEGORIAS.find(c => c.id === id);
+  const lista = id === 'destaques' ? PRATOS.filter(p => p.destaque) : PRATOS.filter(p => p.cat === id);
+  conteudo.innerHTML = `<h2 class="secao-titulo">${cat.nome}</h2><p class="secao-sub">${cat.sub}</p><div class="grade"></div>`;
+  const grade = conteudo.querySelector('.grade');
+  lista.forEach(p => grade.appendChild(card(p, id === 'destaques')));
+  window.CardapioNuvem && CardapioNuvem.resolverImagens(conteudo);
+  abasEl.querySelectorAll('.aba').forEach(b => b.setAttribute('aria-selected', b.dataset.id === id));
+  history.replaceState(null,'','#'+id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function montarAbas(){ CATEGORIAS.forEach(c => {
+  const b = document.createElement('button');
+  b.className = 'aba'; b.role = 'tab'; b.dataset.id = c.id; b.textContent = c.nome;
+  b.addEventListener('click', () => { mostrar(c.id); b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'}); });
+  abasEl.appendChild(b);
+}); }
+
+function ajustarAltura(){
+  document.documentElement.style.setProperty('--topo-h', document.getElementById('topo').offsetHeight + 'px');
+}
+window.addEventListener('resize', ajustarAltura);
+window.addEventListener('load', ajustarAltura);
+ajustarAltura();
+
+conteudo.innerHTML = '<p class="secao-sub" style="padding:40px 0">Carregando cardápio…</p>';
+(async () => {
+  await aplicarNuvem();
+  montarAbas();
+  if (!PRATOS.length) { conteudo.innerHTML = '<p class="secao-sub" style="padding:40px 0">Cardápio indisponível no momento. Consulte o garçom.</p>'; return; }
+  const inicial = location.hash.slice(1);
+  mostrar(CATEGORIAS.some(c => c.id === inicial) ? inicial : CATEGORIAS[0].id);
+})();
+</script>
+</body>
+</html>
